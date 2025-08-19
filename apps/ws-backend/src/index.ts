@@ -1,7 +1,7 @@
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import jwt, { JwtPayload } from "jsonwebtoken"
-import { JWT_SECRET } from '@repo/backend-common/config';
-import { prismaClient } from '@repo/db/prismaClient';
+import { JWT_PASSWORD } from '@repo/backend-common/config';
+import { prismaClient } from '@repo/db/client';
 
 const wss = new WebSocketServer({ port: 8080 });
 
@@ -11,7 +11,7 @@ interface User {
   userId: string;
 }
 
-const users: Users[]= [];
+const users: User[]= [];
 
 function checkUser(token: string): string | null {
   try {

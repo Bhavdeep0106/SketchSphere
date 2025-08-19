@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import express from "express";
 import Jwt from "jsonwebtoken";
 import { JWT_PASSWORD } from "@repo/backend-common/config";
@@ -17,12 +18,12 @@ app.post("/signup", async (req, res) => {
         });
         return;
     }
-    //TODO: hash the password
     try {
+        const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
         const user = await prismaClient.user.create({
             data: {
-                email: parsedData.data?.username,
-                password: parsedData.data.password,
+                email: parsedData.data.username,
+                password: hashedPassword,
                 name: parsedData.data.name,
             },
         });
@@ -44,15 +45,13 @@ app.post("/signin", async (req, res) => {
     });
     return;
   }
-  //TODO: Compare the hased password
   const user = await prismaClient.user.findFirst({
     where: {
       email: parsedData.data.username,
-      password: parsedData.data.password
     }
   })
 
-  if (!user) {
+  if (!user || !(await bcrypt.compare(parsedData.data.password, user.password))) {
     res.status(403).json({
       message: "Not authorized"
     })
@@ -77,14 +76,19 @@ app.post("/room", middleware, async (req, res) => {
     });
     return;
   }
-  //@ts-ignore  TODO : fix later 
+
   const userId = req.userId;
+  if (!userId) {
+    res.status(400).json({
+      message: "User ID is missing"
+    });
+    return;
+  }
   try{
-    
   const room =await prismaClient.room.create({
     data: {
       slug: parsedData.data.name,
-      adminId: userId
+      adminId: userId as string
     }
   })
 
