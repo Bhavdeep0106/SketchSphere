@@ -1,7 +1,7 @@
 " use client "
  
 import { useEffect, useState } from "react";
-import { useSockets } from "../hooks/useSockets";
+import { useSocket } from "../hooks/useSocket";
 
 export function ChatRoomClient({
     messages,
@@ -12,7 +12,7 @@ export function ChatRoomClient({
 }) {
     const [chats, setChats] = useState(messages);
     const [currentMessages, setCurrentMessages] = useState("");
-    const {socket, loading} = useState();
+    const {socket, loading} = useSocket();
 
     useEffect(() => {
         if( socket && !loading) {
