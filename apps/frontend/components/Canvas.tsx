@@ -9,9 +9,9 @@ export type Tool = "circle" | "rectangle" | "pencil";
 export function Canvas({    
     roomId,
     socket
-}; {
+}: {
+    roomId: string;
     socket: WebSocket;
-    rommId: string;
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [game, setGame] = useState<Game>();
@@ -20,7 +20,7 @@ export function Canvas({
     useEffect(() => {
 
         if (canvasRef.current) {
-            const gameInstance = new Game(canvasRef.current, socket, roomId);
+            const gameInstance = new Game(canvasRef.current, roomId, socket);
             setGame(gameInstance);
 
             return () => {
