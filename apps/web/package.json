@@ -11,6 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@repo/ui": "workspace:*",
     "axios": "^1.7.9",
     "next": "^15.1.0",

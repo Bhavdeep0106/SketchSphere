@@ -67,6 +67,4 @@ export function Canvas({
             </div>
         </div>
      }
-
-
 }
