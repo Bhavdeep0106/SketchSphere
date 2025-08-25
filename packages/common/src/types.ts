@@ -2,14 +2,6 @@ import { z } from "zod";
 
 export{}
 
-declare global {
-  namespace Express {
-    export interface Request {
-      userId?: string;
-    }
-  }
-}
-
 
 export const CreateUserSchema = z.object({
     username: z.string().min(3).max(20),
